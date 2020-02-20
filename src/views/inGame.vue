@@ -5,6 +5,7 @@
         <img
           class="target custom-cur"
           src="../assets/target.png"
+          draggable="false"
           v-if="number > -1"
           :style="getPosition"
           @click.prevent="clickMe"
@@ -75,7 +76,7 @@ export default {
       this.countDownTimer()
     },
     random () {
-      this.atas = Math.floor(Math.random() * 25) + 0
+      this.atas = Math.floor(Math.random() * 25) - 3
       this.kiri = Math.floor(Math.random() * 20) + 0
       this.atas += 'rem'
       this.kiri += 'rem'
@@ -122,9 +123,11 @@ export default {
 <style scoped>
 .custom-cur {
   cursor: url('https://s3-ap-southeast-1.amazonaws.com/assets.muhammadsatriaadiputra.digital/assets/thor_hammer_flip.ico'), move;
+  transition: .2s;
 }
 .custom-cur:active{
   cursor: url('https://s3-ap-southeast-1.amazonaws.com/assets.muhammadsatriaadiputra.digital/assets/thor_hammer_rotate.ico'), move;
+  /* transition: .3s; */
 }
 .target {
   width: 200px;
@@ -135,7 +138,9 @@ export default {
   /* height: 80vh; */
   background-image: url('../assets/soil.jpg');
   background-size: cover;
-  border-radius: 2vh
+  border-radius: 2vh;
+  cursor: crosshair;
+  user-select: none;
 }
 .scoreboard {
   background-image: url('../assets/grass.jpg');
