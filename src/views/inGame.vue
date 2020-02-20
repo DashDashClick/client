@@ -16,7 +16,7 @@
             <b-card-title>Room {{this.$route.params.id}}</b-card-title>
             <b-card-body>
               <b-card-text>TIMER</b-card-text>
-              <b-card-text>{{countdown}}</b-card-text>
+              <b-progress :value="countdown" :max="maxTimer" show-value animated></b-progress>
             </b-card-body>
             <b-card-body>
               <b-card-text>SCORE</b-card-text>
@@ -43,9 +43,10 @@ export default {
     return {
       number: -1,
       socket: io.connect('http://localhost:3000'),
-      countdown: 5,
+      countdown: 0,
       atas: 0,
-      kiri: 0
+      kiri: 0,
+      maxTimer: 0
     }
   },
   props: {
@@ -95,12 +96,18 @@ export default {
           score: this.number
         })
       }
+    },
+    setCountdown () {
+      const number = Math.ceil(Math.random() * 10 + 15)
+      this.countdown = number
+      this.maxTimer = number
     }
   },
   created () {
     this.socket.on('finalScore', payload => {
       console.log(payload, 'pemenangnya')
     })
+    this.setCountdown()
   }
 }
 </script>
