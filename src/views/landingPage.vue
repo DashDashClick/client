@@ -66,6 +66,9 @@ export default {
     },
     fetchRoom () {
       this.socket.emit('fetchRoom')
+    },
+    setUsername (username) {
+      this.$store.commit('SET_USER_NAME', username)
     }
   },
   created () {
@@ -85,6 +88,11 @@ export default {
       console.log(payload, 'joined the room')
       this.$router.push(`/inGame/${payload.id}`)
     })
+  },
+  watch: {
+    userName (username) {
+      this.setUsername(username)
+    }
   }
 }
 </script>

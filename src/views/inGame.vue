@@ -13,7 +13,11 @@
       <b-col cols="3">
         <div class="scoreboard">
           <b-card class="scoreContainer">
-            <b-card-title>Room {{this.$route.params.id}}</b-card-title>
+            <b-card-title>ROOM {{this.$route.params.id}}</b-card-title>
+            <b-card-body>
+              <b-card-text>USERNAME</b-card-text>
+              <b-card-text>{{ userName }}</b-card-text>
+            </b-card-body>
             <b-card-body>
               <b-card-text>TIMER</b-card-text>
               <b-progress :value="countdown" :max="maxTimer" show-value animated></b-progress>
@@ -36,6 +40,7 @@
 </template>
 <script>
 import io from 'socket.io-client'
+import { mapState } from 'vuex'
 
 export default {
   name: 'inGame',
@@ -58,7 +63,10 @@ export default {
         'margin-top': this.atas,
         'margin-left': this.kiri
       }
-    }
+    },
+    ...mapState([
+      'userName'
+    ])
   },
   methods: {
     mulai () {
