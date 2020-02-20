@@ -1,16 +1,12 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/landingPage">landing</router-link>
-    </div>
     <router-view/>
   </div>
 </template>
 <script>
 import io from 'socket.io-client'
 export default {
-  data(){
+  data () {
     return {
       socket: io.connect('http://localhost:3000')
     }
@@ -18,8 +14,7 @@ export default {
   props: {
     msg: String
   },
-  created:function(){
-    
+  created: function () {
   }
 }
 </script>
