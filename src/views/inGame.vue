@@ -83,9 +83,11 @@ export default {
     },
     clickMe () {
       if (this.countdown > 0) {
-        this.number += 1
+        this.number += 100
         this.random()
         console.log(this.number, 'ini angka sekarang')
+        const audio = new Audio('https://s3-ap-southeast-1.amazonaws.com/assets.muhammadsatriaadiputra.digital/assets/sharp_punch.mp3')
+        audio.play()
       } else {
         // this.number += 1
         // socket.emit number
@@ -98,6 +100,8 @@ export default {
         setTimeout(() => {
           this.countdown -= 1
           this.countDownTimer()
+          const audio = new Audio('https://s3-ap-southeast-1.amazonaws.com/assets.muhammadsatriaadiputra.digital/assets/beep_ping.mp3')
+          audio.play()
         }, 1000)
       } else {
         this.socket.emit('inGame', {
@@ -113,12 +117,17 @@ export default {
       const number = 10
       this.countdown = number
       this.maxTimer = number
+      const audio = new Audio('https://s3-ap-southeast-1.amazonaws.com/assets.muhammadsatriaadiputra.digital/assets/electronic_chime.mp3')
+      audio.play()
     }
   },
   created () {
-    this.socket.on('finalScore', payload => {
-      console.log(payload, 'pemenangnya')
-      this.$store.commit('SET_WINNER', payload)
+    this.socket.on('finalScore', (payload, hasil) => {
+      console.log(payload, 'win')
+      this.$store.commit('CHECK_RESULT', {
+        payload,
+        hasil
+      })
     })
     this.setCountdown()
   }
@@ -140,7 +149,7 @@ export default {
 .gameArea {
   width: 100vw;
   /* height: 80vh; */
-  background-image: url('../assets/soil.jpg');
+  background-image: url('../assets/fire.jpg');
   background-size: cover;
   border-radius: 2vh;
   /* cursor: crosshair; */
@@ -148,7 +157,7 @@ export default {
   user-select: none;
 }
 .scoreboard {
-  background-image: url('../assets/grass.jpg');
+  background-image: url('../assets/soil.jpg');
   height: 100%;
   border-radius: 2vh;
   background-size: cover;

@@ -10,6 +10,7 @@
         <b-card-text>{{ winner.score }}</b-card-text>
       </b-card>
     </div>
+    <button class="btn btn-danger" style="position: absolute; bottom: 2rem; right: 2rem;" @click.prevent="toHome">HOME</button>
   </div>
 </template>
 
@@ -17,6 +18,11 @@
 export default {
   props: {
     winner: Object
+  },
+  methods: {
+    toHome () {
+      this.$router.push('/')
+    }
   }
 }
 </script>

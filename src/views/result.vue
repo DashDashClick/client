@@ -1,7 +1,8 @@
 <template>
   <div>
     <Win v-if="isWinner" />
-    <Lose v-if="!isWinner" :winner="winner"/>
+    <Lose v-if="!isWinner && result !== 'draw'" :winner="winner"/>
+    <h1 v-if="result === 'draw'"> DRAW BRO</h1>
   </div>
 </template>
 
@@ -17,6 +18,7 @@ export default {
   computed: {
     ...mapState([
       'winner',
+      'result',
       'userName'
     ]),
     isWinner () {

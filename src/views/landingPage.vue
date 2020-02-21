@@ -53,16 +53,25 @@ export default {
   },
   methods: {
     joinRoom (id) {
-      this.socket.emit('joinRoom', {
-        id,
-        username: this.userName
-      })
+      console.log('usernamenya', this.userName)
+      if (this.userName) {
+        this.socket.emit('joinRoom', {
+          id,
+          username: this.userName
+        })
+      } else {
+        this.$alertify.error('Please enter the username')
+      }
     },
     addRoom () {
-      this.socket.emit('createRoom', {
-        roomName: this.roomName,
-        username: this.userName
-      })
+      if (this.userName && this.roomName) {
+        this.socket.emit('createRoom', {
+          roomName: this.roomName,
+          username: this.userName
+        })
+      } else {
+        this.$alertify.error('Username or room name cannot be blank')
+      }
     },
     fetchRoom () {
       this.socket.emit('fetchRoom')

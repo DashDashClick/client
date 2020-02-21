@@ -7,14 +7,16 @@ export default new Vuex.Store({
   state: {
     roomName: '',
     userName: '',
-    winner: {}
+    winner: {},
+    result: ''
   },
   mutations: {
     setUsername (state, data) {
       state.userName = data
     },
-    SET_WINNER (state, data) {
-      state.winner = data
+    CHECK_RESULT (state, data) {
+      state.winner = data.payload
+      state.result = data.hasil
     }
   },
   actions: {
