@@ -83,6 +83,8 @@ export default {
   created:function(){
     this.socket.on('finalScore', (payload)=>{
       console.log(payload, 'pemenangnya');
+      // set to viuex
+      // 
       
     })
   }
