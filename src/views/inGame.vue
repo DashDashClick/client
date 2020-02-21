@@ -83,9 +83,11 @@ export default {
     },
     clickMe () {
       if (this.countdown > 0) {
-        this.number += 1
+        this.number += 100
         this.random()
         console.log(this.number, 'ini angka sekarang')
+        const audio = new Audio('https://s3-ap-southeast-1.amazonaws.com/assets.muhammadsatriaadiputra.digital/assets/sharp_punch.mp3')
+        audio.play()
       } else {
         // this.number += 1
         // socket.emit number
@@ -98,6 +100,8 @@ export default {
         setTimeout(() => {
           this.countdown -= 1
           this.countDownTimer()
+          const audio = new Audio('https://s3-ap-southeast-1.amazonaws.com/assets.muhammadsatriaadiputra.digital/assets/beep_ping.mp3')
+          audio.play()
         }, 1000)
       } else {
         this.socket.emit('inGame', {
@@ -105,20 +109,25 @@ export default {
           id: this.$route.params,
           score: this.number
         })
+        this.$router.push('/result')
       }
     },
     setCountdown () {
       // const number = Math.ceil(Math.random() * 10 + 15)
-      let number = 10
+      const number = 10
       this.countdown = number
       this.maxTimer = number
+      const audio = new Audio('https://s3-ap-southeast-1.amazonaws.com/assets.muhammadsatriaadiputra.digital/assets/electronic_chime.mp3')
+      audio.play()
     }
   },
-  created:function(){
-    this.socket.on('finalScore', (payload)=>{
-      console.log(payload, 'pemenangnya');
-      // set to viuex
-      // 
+  created () {
+    this.socket.on('finalScore', (payload, hasil) => {
+      console.log(payload, 'win')
+      this.$store.commit('CHECK_RESULT', {
+        payload,
+        hasil
+      })
     })
     this.setCountdown()
   }
@@ -126,11 +135,11 @@ export default {
 </script>
 <style scoped>
 .custom-cur {
-  cursor: url('https://s3-ap-southeast-1.amazonaws.com/assets.muhammadsatriaadiputra.digital/assets/thor_hammer_flip.ico'), move;
+  cursor: url('https://s3-ap-southeast-1.amazonaws.com/assets.muhammadsatriaadiputra.digital/assets/hands.png'), move;
   transition: .2s;
 }
 .custom-cur:active{
-  cursor: url('https://s3-ap-southeast-1.amazonaws.com/assets.muhammadsatriaadiputra.digital/assets/thor_hammer_rotate.ico'), move;
+  cursor: url('https://s3-ap-southeast-1.amazonaws.com/assets.muhammadsatriaadiputra.digital/assets/hands_rotated.png'), move;
   /* transition: .3s; */
 }
 .target {
@@ -140,14 +149,15 @@ export default {
 .gameArea {
   width: 100vw;
   /* height: 80vh; */
-  background-image: url('../assets/soil.jpg');
+  background-image: url('../assets/fire.jpg');
   background-size: cover;
   border-radius: 2vh;
-  cursor: crosshair;
+  /* cursor: crosshair; */
+  cursor: url('https://s3-ap-southeast-1.amazonaws.com/assets.muhammadsatriaadiputra.digital/assets/hands.png'), move;
   user-select: none;
 }
 .scoreboard {
-  background-image: url('../assets/grass.jpg');
+  background-image: url('../assets/soil.jpg');
   height: 100%;
   border-radius: 2vh;
   background-size: cover;
