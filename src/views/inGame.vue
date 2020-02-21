@@ -48,7 +48,7 @@ export default {
   data () {
     return {
       number: -1,
-      socket: io.connect('http://localhost:3000'),
+      socket: io.connect('https://tranquil-thicket-70625.herokuapp.com'),
       countdown: 0,
       atas: 0,
       kiri: 0,
