@@ -1,8 +1,8 @@
 <template>
   <div>
-    <Win v-if="isWinner" />
-    <Lose v-if="!isWinner && result !== 'draw'" :winner="winner"/>
-    <h1 v-if="result === 'draw'"> DRAW BRO</h1>
+    <Win v-if="isWinner && result !== 'draw' && result === 'win'" />
+    <Lose v-if="!isWinner && result !== 'draw' && result !== 'win'" :winner="winner"/>
+    <Draw v-if="result === 'draw'"> DRAW BRO</Draw>
   </div>
 </template>
 
@@ -10,6 +10,7 @@
 import { mapState } from 'vuex'
 import Lose from '@/components/lose'
 import Win from '@/components/win'
+import Draw from '@/components/draw'
 
 export default {
   data () {
@@ -27,7 +28,8 @@ export default {
   },
   components: {
     Lose,
-    Win
+    Win,
+    Draw
   }
 }
 </script>
