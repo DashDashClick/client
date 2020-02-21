@@ -105,20 +105,20 @@ export default {
           id: this.$route.params,
           score: this.number
         })
+        this.$router.push('/result')
       }
     },
     setCountdown () {
       // const number = Math.ceil(Math.random() * 10 + 15)
-      let number = 10
+      const number = 10
       this.countdown = number
       this.maxTimer = number
     }
   },
-  created:function(){
-    this.socket.on('finalScore', (payload)=>{
-      console.log(payload, 'pemenangnya');
-      // set to viuex
-      // 
+  created () {
+    this.socket.on('finalScore', payload => {
+      console.log(payload, 'pemenangnya')
+      this.$store.commit('SET_WINNER', payload)
     })
     this.setCountdown()
   }
@@ -126,11 +126,11 @@ export default {
 </script>
 <style scoped>
 .custom-cur {
-  cursor: url('https://s3-ap-southeast-1.amazonaws.com/assets.muhammadsatriaadiputra.digital/assets/thor_hammer_flip.ico'), move;
+  cursor: url('https://s3-ap-southeast-1.amazonaws.com/assets.muhammadsatriaadiputra.digital/assets/hands.png'), move;
   transition: .2s;
 }
 .custom-cur:active{
-  cursor: url('https://s3-ap-southeast-1.amazonaws.com/assets.muhammadsatriaadiputra.digital/assets/thor_hammer_rotate.ico'), move;
+  cursor: url('https://s3-ap-southeast-1.amazonaws.com/assets.muhammadsatriaadiputra.digital/assets/hands_rotated.png'), move;
   /* transition: .3s; */
 }
 .target {
@@ -143,7 +143,8 @@ export default {
   background-image: url('../assets/soil.jpg');
   background-size: cover;
   border-radius: 2vh;
-  cursor: crosshair;
+  /* cursor: crosshair; */
+  cursor: url('https://s3-ap-southeast-1.amazonaws.com/assets.muhammadsatriaadiputra.digital/assets/hands.png'), move;
   user-select: none;
 }
 .scoreboard {
