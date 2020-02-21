@@ -1,95 +1,161 @@
 <template>
-  <div class="about">
-
-    <h3>{{countdown}}</h3>
-    <h1>This is an about page</h1>
-    {{number}}
-    <button @click.prevent="mulai">start</button>
-    <div class="container mt-5 mb-5">
-    <button v-if="number > -1" 
-      :style="getPosition"
-      @click.prevent="clickMe"
-      >click me</button>
-      <!-- v-bind:style="{margin-top: 15rem, margin-left:25rem}" -->
-
-    </div>
-  </div>
+  <b-container style="justify-content: center; margin-top: 10vh;">
+    <b-row style="height: 80vh;">
+      <b-col cols="9" class="gameArea">
+        <img
+          class="target custom-cur"
+          src="../assets/target.png"
+          draggable="false"
+          v-if="number > -1"
+          :style="getPosition"
+          @click.prevent="clickMe"
+        >
+      </b-col>
+      <b-col cols="3">
+        <div class="scoreboard">
+          <b-card class="scoreContainer">
+            <b-card-title>ROOM {{this.$route.params.id}}</b-card-title>
+            <b-card-body>
+              <b-card-text>USERNAME</b-card-text>
+              <b-card-text>{{ userName }}</b-card-text>
+            </b-card-body>
+            <b-card-body>
+              <b-card-text>TIMER</b-card-text>
+              <b-progress :value="countdown" :max="maxTimer" show-value animated></b-progress>
+            </b-card-body>
+            <b-card-body>
+              <b-card-text>SCORE</b-card-text>
+              <b-card-text>{{number > 0 ? number : 0}}</b-card-text>
+            </b-card-body>
+            <b-button
+              class="btn btn-danger"
+              style="margin-top: 5vh; width: 60%"
+              @click.prevent="mulai">
+              Start
+            </b-button>
+          </b-card>
+        </div>
+      </b-col>
+    </b-row>
+  </b-container>
 </template>
 <script>
 import io from 'socket.io-client'
-name: 'inGame'
+import { mapState } from 'vuex'
+
 export default {
-  data(){
+  name: 'inGame',
+  data () {
     return {
       number: -1,
       socket: io.connect('http://localhost:3000'),
-      countdown: 5,
+      countdown: 0,
       atas: 0,
-      kiri: 0
+      kiri: 0,
+      maxTimer: 0
     }
   },
   props: {
     msg: String
   },
-  computed:{
-   getPosition(){
-     return {
-       "margin-top": this.atas,
-       "margin-left": this.kiri
-     }
-   }
+  computed: {
+    getPosition () {
+      return {
+        'margin-top': this.atas,
+        'margin-left': this.kiri
+      }
+    },
+    ...mapState([
+      'userName'
+    ])
   },
-  methods:{
-    mulai(){
+  methods: {
+    mulai () {
       this.number = 0
       this.random()
       this.countDownTimer()
     },
-     random(){
-      this.atas = Math.floor(Math.random() * 25) + 0;
-      this.kiri = Math.floor(Math.random() * 20) + 0;
-      this.atas += 'rem' 
+    random () {
+      this.atas = Math.floor(Math.random() * 25) - 3
+      this.kiri = Math.floor(Math.random() * 20) + 0
+      this.atas += 'rem'
       this.kiri += 'rem'
-      // console.log(this.kiri, 'ini kiri');
-      
     },
-    clickMe(){
-      if(this.countdown > 0 ){
-      this.number += 1
-      this.random()
-      console.log(this.number, 'ini angka sekarang');
-      }else{
+    clickMe () {
+      if (this.countdown > 0) {
+        this.number += 1
+        this.random()
+        console.log(this.number, 'ini angka sekarang')
+      } else {
         // this.number += 1
         // socket.emit number
-        
-        console.log(this.number,'waktunya habis');
+        console.log(this.number, 'waktunya habis')
       }
     },
-      countDownTimer() {
-        if(this.countdown > 0) {
-        console.log('jalan');
-          setTimeout(() => {
-              this.countdown -= 1
-              this.countDownTimer()
-          }, 1000)
-        }else{
-          this.socket.emit('inGame',{
-            id: this.$route.params,
-            score: this.number
-          } )
-        }
+    countDownTimer () {
+      if (this.countdown > 0) {
+        console.log('jalan')
+        setTimeout(() => {
+          this.countdown -= 1
+          this.countDownTimer()
+        }, 1000)
+      } else {
+        this.socket.emit('inGame', {
+          username: this.$store.state.userName,
+          id: this.$route.params,
+          score: this.number
+        })
       }
+    },
+    setCountdown () {
+      // const number = Math.ceil(Math.random() * 10 + 15)
+      let number = 10
+      this.countdown = number
+      this.maxTimer = number
+    }
   },
   created:function(){
     this.socket.on('finalScore', (payload)=>{
       console.log(payload, 'pemenangnya');
       // set to viuex
       // 
-      
     })
+    this.setCountdown()
   }
 }
 </script>
 <style scoped>
-
+.custom-cur {
+  cursor: url('https://s3-ap-southeast-1.amazonaws.com/assets.muhammadsatriaadiputra.digital/assets/thor_hammer_flip.ico'), move;
+  transition: .2s;
+}
+.custom-cur:active{
+  cursor: url('https://s3-ap-southeast-1.amazonaws.com/assets.muhammadsatriaadiputra.digital/assets/thor_hammer_rotate.ico'), move;
+  /* transition: .3s; */
+}
+.target {
+  width: 200px;
+  height: 200px;
+}
+.gameArea {
+  width: 100vw;
+  /* height: 80vh; */
+  background-image: url('../assets/soil.jpg');
+  background-size: cover;
+  border-radius: 2vh;
+  cursor: crosshair;
+  user-select: none;
+}
+.scoreboard {
+  background-image: url('../assets/grass.jpg');
+  height: 100%;
+  border-radius: 2vh;
+  background-size: cover;
+  color: white;
+}
+.scoreContainer {
+  border-radius: 2vh;
+  background: rgba(0,0,0,0.5);
+  height: 100%;
+}
 </style>
