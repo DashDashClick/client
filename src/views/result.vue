@@ -1,8 +1,9 @@
 <template>
   <div>
-    <Win v-if="isWinner && result !== 'draw' && result === 'win'" />
-    <Lose v-if="!isWinner && result !== 'draw' && result !== 'win'" :winner="winner"/>
-    <Draw v-if="result === 'draw'"> DRAW BRO</Draw>
+    <h1 v-if="!result">Waiting another player to finish the game</h1>
+    <Win v-if="isWinner && result !== 'draw' && result" />
+    <Lose v-if="!isWinner && result !== 'draw' && result" :winner="winner"/>
+    <Draw v-if="result === 'draw'"></Draw>
   </div>
 </template>
 
