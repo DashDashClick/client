@@ -8,14 +8,17 @@ import io from 'socket.io-client'
 export default {
   data () {
     return {
-      socket: io.connect('http://localhost:3000')
+      socket: io.connect('https://tranquil-thicket-70625.herokuapp.com')
     }
   },
   props: {
     msg: String
   },
   created: function () {
-    this.$router.push('/')
+    console.log('namanya', this.$route.name)
+    if (!this.$route.name) {
+      this.$router.push('/')
+    }
   }
 }
 </script>

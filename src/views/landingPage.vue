@@ -45,7 +45,7 @@ export default {
   },
   data () {
     return {
-      socket: io.connect('http://localhost:3000'),
+      socket: io.connect('https://tranquil-thicket-70625.herokuapp.com'),
       roomName: '',
       rooms: [],
       userName: ''
